@@ -1,11 +1,15 @@
+body{
+    background-image: url('../images/trivia\ background.jpg');
+}
 .navbar {
     background-color: black
 }
 .container {
-    margin:100px;
+    margin:1px;
     border: 2px solid black;
     height: 500px;
     text-align: center;
+    background-color: aliceblue;
 }
 
 .Heading{
