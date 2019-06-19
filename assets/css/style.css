@@ -1,0 +1,21 @@
+.navbar {
+    background-color: black
+}
+.container {
+    margin:100px;
+    border: 2px solid black;
+    height: 500px;
+    text-align: center;
+}
+
+.Heading{
+    font-size: 40px;
+    font-weight: bold;
+}
+.btn{
+    background-color: red;
+    font-size: 25px;
+    width: 150px;
+    height: 60px;
+    margin-top: 80px;
+}
