@@ -1,5 +1,6 @@
 
-
+var numCorrect = 0;
+var numIncorrect = 0;
 const questions = [
     {
         q: "Who was the very first black super to hit mainstream comics?",
@@ -45,7 +46,13 @@ const questions = [
         q: "What is the color of Hal Jordan's ring?",
         a: ["Green", "Red", "Blue", "Yellow"],
         correct: "Green"
+    },
+    {
+        q: "Which of these characters is a DC superhero?",
+        a: ["Spawn", "Major X", "Blue Beetle", "Spider-man"],
+        correct: "Blue Beetle"
     }
+
 
 ]
 
@@ -66,12 +73,13 @@ function renderQuestions(questions) {
             var btn = $("<button>");
             var answer = questions[i].a[j];
             btn.text(answer).val(answer);
-            
-            // btn.attr('data-answer', questions[i].a);
-          
+
+
+
+
             list.append(btn);
         }
-       
+
 
         order.append(list);
     }
@@ -86,32 +94,32 @@ function renderQuestions(questions) {
 
 
 
-function checkAnswer() {
+function checkAnswer(userAnswer) {
     var correctAnswer;
-    var userAnswer;
-    var numCorrect = 0;
-    var numIncorrect = 0;
-
-
     // loop through to compare the text of the label with the user answers
     // increment score counts appropriately
     for (var i = 0; i < questions.length; i++) {
         correctAnswer = questions[i].correct;
-       console.log(correctAnswer)
-      
-        
-
+        //    console.log(correctAnswer)
         if (userAnswer === correctAnswer) {
             numCorrect++;
+            console.log(numCorrect)
+        }
+        else if(userAnswer !== correctAnswer){
+            numIncorrect++;
+            
 
-        } else if (userAnswer !== correctAnswer) {
-            {
-                numIncorrect++;
-            }
         }
     }
+    console.log(numIncorrect);
     console.log(userAnswer);
 }
+
+function dispayScore() {
+    $("score").text("Your score: " + numCorrect + "/ 10");
+}
+
+
 
 function gameTimer() {
     var timeLeft = 30;
@@ -131,16 +139,15 @@ function gameTimer() {
 
 function stopGame() {
     clearTimeout(gameTimer);
-    $("#correct-answers").text("Correct answers (Woo-hoo!): " + numCorrect);
-    $("#incorrect-answers").text("Incorrect answers (D'oh!): " + numIncorrect);
-    
+
+
 }
 function startGame() {
     var contentDisplay = $("#questionDisplay");
     $(this).hide();
     renderQuestions(questions);
     gameTimer();
-    checkAnswer();
+    
     $('div.Heading').append(contentDisplay);
 
 }
@@ -150,7 +157,9 @@ function startGame() {
 // Ensures HTML has rendered to page before logic is applied.
 $(document).ready(function () {
     $('#start-btn').on('click', startGame);
-    // if(gameTimer() === 0){
-    //     //run stopGame();
-    // }
+    $('#questionDisplay').on('click', 'button', function () {
+        var userAnswer = ($(this).attr('value'));
+        checkAnswer(userAnswer);
+    }); // event delegation
+
 })
