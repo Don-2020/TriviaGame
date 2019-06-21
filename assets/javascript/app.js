@@ -1,6 +1,9 @@
 
 var numCorrect = 0;
-var numIncorrect = 0;
+var contentDisplay = $("#questionDisplay");
+var timeLeft = 5;
+var gameTimer;
+
 const questions = [
     {
         q: "Who was the very first black super to hit mainstream comics?",
@@ -73,26 +76,14 @@ function renderQuestions(questions) {
             var btn = $("<button>");
             var answer = questions[i].a[j];
             btn.text(answer).val(answer);
-
-
-
-
             list.append(btn);
         }
-
 
         order.append(list);
     }
     qDiv.append(order);
     $("#questionDisplay").append(qDiv);
 }
-
-
-
-
-
-
-
 
 function checkAnswer(userAnswer) {
     var correctAnswer;
@@ -105,48 +96,71 @@ function checkAnswer(userAnswer) {
             numCorrect++;
             console.log(numCorrect)
         }
-        else if(userAnswer !== correctAnswer){
-            numIncorrect++;
-            
-
-        }
-    }
-    console.log(numIncorrect);
+        
+    
     console.log(userAnswer);
 }
+}
 
-function dispayScore() {
-    $("score").text("Your score: " + numCorrect + "/ 10");
+function displayScore(numCorrect) {
+    if(numCorrect === 10){
+        // $('#winorlose').text("YOU WON!!");
+        $("#score").text("Your score: " + numCorrect + "/ 10 You Won");
+
+    }
+    else if(numCorrect === 0){
+        // $('#winorlose').text("LOSER!!!");
+        $("#score").text("Your score: " + numCorrect + "/ 10 You Lost");
+
+    }
+    else{
+        // $('#winorlose').text("Your did aight");
+        $("#score").text("Your score: " + numCorrect + "/ 10 You did aight");
+
+    }
 }
 
 
 
-function gameTimer() {
-    var timeLeft = 30;
+function startTimer() {
+   timeLeft=5
     $("#countdown").text("Time remaining: " + timeLeft);
-    setInterval(function () {
+    gameTimer = setInterval(function () {
         timeLeft--;
         $("#countdown").text("Time remaining: " + timeLeft);
 
         if (timeLeft === 0) {
-            stopGame();
+            
             $("#countdown").empty();
+            clearInterval(gameTimer);
+            stopGame();
+    
         }
     }, 1000)
 
 }
 
 
-function stopGame() {
-    clearTimeout(gameTimer);
+function stopGame() {   
+    contentDisplay.hide();
+    displayScore(numCorrect);
+}
 
+function startGame() {
+    contentDisplay
+    $('#start-btn').hide();
+    renderQuestions(questions);
+    startTimer();
+    $('div.Heading').append(contentDisplay);
 
 }
-function startGame() {
-    var contentDisplay = $("#questionDisplay");
-    $(this).hide();
-    renderQuestions(questions);
-    gameTimer();
+function resetGame(){
+    contentDisplay.show();
+   
+    
+    // renderQuestions(questions);
+    startTimer();
+    numCorrect = 0;
     
     $('div.Heading').append(contentDisplay);
 
@@ -157,6 +171,9 @@ function startGame() {
 // Ensures HTML has rendered to page before logic is applied.
 $(document).ready(function () {
     $('#start-btn').on('click', startGame);
+    $('#reset-btn').on('click', resetGame);
+   
+   
     $('#questionDisplay').on('click', 'button', function () {
         var userAnswer = ($(this).attr('value'));
         checkAnswer(userAnswer);
