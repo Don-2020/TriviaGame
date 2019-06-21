@@ -27,3 +27,8 @@ body{
 .questions{
     font-size:20px;
 }
+
+#score{
+    text-align: center;
+    background-color: aliceblue;
+}
