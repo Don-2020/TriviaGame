@@ -1,72 +1,159 @@
-// alert('Im linked!');
 
-// $('#start-btn').on('click', function() {
-//     alert('Im linked!');
-// })
-
-// questions[0] >>>>> { q: , a: }
-// questions[0].q >>>>>> the sky is blue
-
-let gameTimer;
 
 const questions = [
     {
-        q: "The sky is blue.",
-        a: true
+        q: "Who was the very first black super to hit mainstream comics?",
+        a: ["Black Panther", "Falcon", "Green Latern", "Luke Cage"],
+        correct: "Black Panther"
     },
     {
-        q: "The grass is green.",
-        a: true
+        q: "Which color was the Hulk orignally printed in?",
+        a: ["Green", "Black", "Gray", "Pink"],
+        correct: "Gray"
     },
     {
-        q: "The world is flat.",
-        a: false
+        q: "What is Captain America's real name?",
+        a: ["Steve Rogers", "Micheal Hammer", "Clark Kent", "Mattew Heart"],
+        correct: "Steve Rogers"
+    },
+    {
+        q: "Who is the fastest superhero?",
+        a: ["Quicksilver", "Superman", "Flash", "Speedy"],
+        correct: "Flash"
+    },
+    {
+        q: "What year did the first Avenger movie come out?",
+        a: ["2010", "2012", "2011", "2014"],
+        correct: "2012"
+    },
+    {
+        q: "What Bruce wayne's superhero name?",
+        a: ["Hawk", "Batman", "Nightwing", "Darkwing"],
+        correct: "Batman"
+    },
+    {
+        q: "Who is the strongest?",
+        a: ["Hulk", "Thor", "Captian Marvel", "Squirrel Girl"],
+        correct: "Squirrel Girl"
+    },
+    {
+        q: "Who played Ironman?",
+        a: ["Robert Downey Jr", "Zane Thomas", "Christian Bale", "Mark Hamil"],
+        correct: "Robert Downey Jr"
+    },
+    {
+        q: "What is the color of Hal Jordan's ring?",
+        a: ["Green", "Red", "Blue", "Yellow"],
+        correct: "Green"
     }
+
 ]
 
-function renderQuestions() {
+function renderQuestions(questions) {
     // alert('Rendering Questions!');
 
-    let $ol = $("<ol>");
+    var qDiv = $("<div>");
+    var order = $("<ol>");
 
-    for (let i = 0; i < questions.length; i++) {
+    for (var i = 0; i < questions.length; i++) {
 
-        let $li = $('<li>');
-        $li.text(questions[i].q);
+        var list = $("<li>");
+        list.text(questions[i].q);
 
-        let $trueButton = $("<button>");
-        $trueButton.text('true');
-        $trueButton.attr('data-answer', questions[i].a);
-        $trueButton.attr('data-value', 'true')
-        $li.append($trueButton);
+        // console.log(questions[i].q)
+        for (var j = 0; j < questions[i].a.length; j++) {
+            // console.log(questions[i].a);
+            var btn = $("<button>");
+            var answer = questions[i].a[j];
+            btn.text(answer).val(answer);
+            
+            // btn.attr('data-answer', questions[i].a);
 
-        let $falseButton = $("<button>");
-        $falseButton.text('false');
-        $falseButton.attr('data-answer', questions[i].a);
-        $falseButton.attr('data-value', 'false');
-        $li.append($falseButton);
+            list.append(btn);
+        }
+        $('input:btn').click(function() {
+            
+            $("#input").val(btn); 
+            console.log(this)
+            })
 
-        $ol.append($li);
+        order.append(list);
     }
-
-    $('.questions').append($ol);
-    
+    qDiv.append(order);
+    $("#questionDisplay").append(qDiv);
 }
+
+
+
+
+
+
+
+
+function checkAnswer() {
+    var correctAnswer;
+    var userAnswer;
+    var numCorrect = 0;
+    var numIncorrect = 0;
+
+
+    // loop through to compare the text of the label with the user answers
+    // increment score counts appropriately
+    for (var i = 0; i < questions.length; i++) {
+        correctAnswer = questions[i].correct;
+       console.log(correctAnswer)
+      
+        
+
+        if (userAnswer === correctAnswer) {
+            numCorrect++;
+
+        } else if (userAnswer !== correctAnswer) {
+            {
+                numIncorrect++;
+            }
+        }
+    }
+    console.log(userAnswer);
+}
+
+function gameTimer() {
+    var timeLeft = 30;
+    $("#countdown").text("Time remaining: " + timeLeft);
+    setInterval(function () {
+        timeLeft--;
+        $("#countdown").text("Time remaining: " + timeLeft);
+
+        if (timeLeft === 0) {
+            stopGame();
+            $("#countdown").empty();
+        }
+    }, 1000)
+
+}
+
 
 function stopGame() {
-    alert('Game is stopped!')
-    clearTimeout(gameTimer);
-    
+    clearInterval();
+   
+    checkAnswer(q, a)
+}
+function startGame() {
+    var contentDisplay = $("#questionDisplay");
+    $(this).hide();
+    renderQuestions(questions);
+    gameTimer();
+    checkAnswer();
+    $('div.Heading').append(contentDisplay);
+
 }
 
+
+
 // Ensures HTML has rendered to page before logic is applied.
-$(document).ready(function() {
-
-    $('#start-btn').on('click', function() {
-        $(this).hide();
-        renderQuestions();
-        gameTimer = setTimeout(stopGame, 5000);
-    });
-
-
+$(document).ready(function () {
+    $('#start-btn').on('click', startGame);
+    // if(gameTimer() === 0){
+    //     //run stopGame();
+    // }
 })
