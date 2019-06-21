@@ -68,14 +68,10 @@ function renderQuestions(questions) {
             btn.text(answer).val(answer);
             
             // btn.attr('data-answer', questions[i].a);
-
+          
             list.append(btn);
         }
-        $('input:btn').click(function() {
-            
-            $("#input").val(btn); 
-            console.log(this)
-            })
+       
 
         order.append(list);
     }
@@ -134,9 +130,10 @@ function gameTimer() {
 
 
 function stopGame() {
-    clearInterval();
-   
-    checkAnswer(q, a)
+    clearTimeout(gameTimer);
+    $("#correct-answers").text("Correct answers (Woo-hoo!): " + numCorrect);
+    $("#incorrect-answers").text("Incorrect answers (D'oh!): " + numIncorrect);
+    
 }
 function startGame() {
     var contentDisplay = $("#questionDisplay");
